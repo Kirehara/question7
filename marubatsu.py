@@ -7,520 +7,230 @@ Original file is located at
     https://colab.research.google.com/drive/1pxBbbUuheuaeLrGy3u3n00DakObpl9ds
 """
 
-from pathlib import WindowsPath
-masu=[[" ","1","2","3"],["1","?","?","?",],["2","?","?","?"],["3","?","?","?"]]
+box = [[" ","1","2","3"],["1","?","?","?",],["2","?","?","?"],["3","?","?","?"]]
 for i in range(0,4):
-  print(masu[i])#マスを表示
-
-win=0#勝ちか判定
-point=0#2でそろった判定
-
-kioku=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]#ループしないように行ったとこ記憶、行ったことあるなら１
-def reset():#kiokuとpointリセット
-  global kioku
-  global point
-  kioku=[[0,0,0,0],[0,0,0,0,],[0,0,0,0],[0,0,0,0]]
-  point=0
+    print(box[i])#マスを表示
 
 
-def okuo(x,y):#oを置く処理
-  global win
-  global win
-  global kioku
-  try:#1～3か判定&数字かどうか
-    if x<1 or x>3:
-      newretu=int(input("「1～3」で置きたい列を入力"))
-      x=newretu
-  except  ValueError:
-    print("1～3!!!!!!!")
-    newretu=int(input("「1～3」で置きたい列を入力"))
-    x=newretu
-  try:#1～3か判定&数字かどうか
-    if y<1 or y>3:
-      newgyou=int(input("「1～3」で置きたい行を入力"))
-      y=newgyou
-  except  ValueError:
-    print("1～3!!!!!!!")
-    newgyou=int(input("「1～3」で置きたい行を入力"))
-    y=newgyou
-  if masu[x][y]=="o" or masu[x][y]=="x":#すでにおかれてるマスに置こうとしたとき
-    print("すでに置かれています")
-    try:#数字かどうか
-      newretu=int(input("1～3で置きたい列を入力"))
-    except  ValueError:
-      print("1～3!!!!!!!")
-      newretu=int(input("1～3で置きたい列を入力"))
-    x=newretu
-    try:#数字かどうか
-      newgyou=int(input("1～3で置きたい行を入力"))
-    except  ValueError:
-      print("1～3!!!!!!!")
-      newgyou=int(input("1～3で置きたい行を入力"))
-    y=newgyou
-    try:#1～3か判定&数字かどうか
-      if x<1 or x>3:
-        newretu=int(input("「1～3」で置きたい列を入力"))
-        x=newretu
-    except  ValueError:
-      print("1～3!!!!!!!")
-      newretu=int(input("「1～3」で置きたい列を入力"))
-      x=newretu
-    try:#1～3か判定&数字かどうか
-      if y<1 or y>3:
-        newgyou=int(input("「1～3」で置きたい行を入力"))
-        y=newgyou
-    except  ValueError:
-      print("1～3!!!!!!!")
-      newgyou=int(input("「1～3」で置きたい行を入力"))
-      y=newgyou
-  masu[x][y]="o"#oを置く
-  naname(x,y)
-  reset()
-  naname2(x,y)
-  reset()
-  tate(x,y)
-  reset()
-  yoko(x,y)
-  reset()
-  for i in range(0,4):
-    print(masu[i])#マスを表示
-
-def okux(x,y):#oのときと同じ仕組みでx置く処理
-  global win
-  global kioku
-  global point
-  try:
-    if x<1 or x>3:
-      newretu=int(input("「1～3」で置きたい列を入力"))
-      x=newretu
-  except  ValueError:
-    print("1～3!!!!!!!")
-    newretu=int(input("「1～3」で置きたい列を入力"))
-    x=newretu
-  try:
-    if y<1 or y>3:
-      newgyou=int(input("「1～3」で置きたい行を入力"))
-      y=newgyou
-  except  ValueError:
-    print("1～3!!!!!!!")
-    newgyou=int(input("「1～3」で置きたい行を入力"))
-    y=newgyou
-  if masu[x][y]=="o" or masu[x][y]=="x":
-    print("すでに置かれています")
-    try:
-      newretu=int(input("1～3で置きたい列を入力"))
-    except  ValueError:
-      print("1～3!!!!!!!")
-      newretu=int(input("1～3で置きたい列を入力"))
-    x=newretu
-    try:
-      newgyou=int(input("1～3で置きたい行を入力"))
-    except  ValueError:
-      print("1～3!!!!!!!")
-      newgyou=int(input("1～3で置きたい行を入力"))
-    y=newgyou
-    try:
-      if x<1 or x>3:
-        newretu=int(input("「1～3」で置きたい列を入力"))
-        x=newretu
-    except  ValueError:
-      print("1～3!!!!!!!")
-      newretu=int(input("「1～3」で置きたい列を入力"))
-      x=newretu
-    try:
-      if y<1 or y>3:
-        newgyou=int(input("「1～3」で置きたい行を入力"))
-        y=newgyou
-    except  ValueError:
-      print("1～3!!!!!!!")
-      newgyou=int(input("「1～3」で置きたい行を入力"))
-      y=newgyou
-  masu[x][y]="x"#xを置く
-  naname(x,y)
-  reset()
-  naname2(x,y)
-  reset()
-  tate(x,y)
-  reset()
-  yoko(x,y)
-  reset()
-  if win==10:#xのときwinが10なら20に変えることによってxが勝つ処理行う
-    win=20
-  for i in range(0,4):
-    print(masu[i])#マスを表示
+judge = 0#勝ちか判定
+point = 0#2でそろった判定
+box_x=0
+box_y=0
 
 
-def naname(x,y):#左斜め判定
-  global point
-  global win
-  global kioku
-  kioku[x][y]=1#行ったことあることにする
-  if x-1>0 and y-1>0:#左斜め上が範囲内なら
-    if kioku[x-1][y-1]==0:#左斜め上が行ったことないなら
-      if masu[x][y]==masu[x-1][y-1]:#左斜め上と同じなら
-        point+=1
-        naname(x-1,y-1)
-  if x+1<4 and y+1<4:#右下が範囲内なら
-    if kioku[x+1][y+1]==0:#右下が行ったことないなら
-      if masu[x][y]==masu[x+1][y+1]:#右下と同じなら
-        point+=1
-        naname(x+1,y+1)
-  if point>=2:#point２以上なら勝ちにしたい
-    win=10
+memory = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]#ループしないように行ったとこ記憶、行ったことあるなら１
+def reset():#memoryとpointリセット
+    global memory
+    global point
+    memory = [[0,0,0,0],[0,0,0,0,],[0,0,0,0],[0,0,0,0]]
+    point = 0
 
 
-def naname2(x,y):#右ななめ判定
-  global point
-  global win
-  global kioku
-  kioku[x][y]=1#行ったことあることにする
-  if x-1>0 and y+1<4:#左下が範囲内なら
-    if kioku[x-1][y+1]==0:#左下が行ったことないなら
-      if masu[x][y]==masu[x-1][y+1]:#左下と同じなら
-        point+=1
-        naname2(x-1,y+1)
-  if x+1<4 and y-1>0:#右上が範囲内なら
-    if kioku[x+1][y-1]==0:#右上が行ったことないなら
-      if masu[x][y]==masu[x+1][y-1]:#右上と同じなら
-        point+=1
-        naname2(x+1,y-1)
-  if point>=2:#point２以上なら勝ちにしたい
-    win=10
+def check():
+    global box_x
+    global box_y
+    while 1:
+        try:#数字かどうか
+            box_x = int(input("1～3で置きたい列を入力"))
+        except  ValueError:
+            print("1～3!!!!!!!")
+            box_x = int(input("1～3で置きたい列を入力"))
 
-def yoko(x,y):#横判定
-  global point
-  global win
-  global kioku
-  kioku[x][y]=1#行ったことあることにする
-  if y-1>0:#上が範囲内なら
-    if kioku[x][y-1]==0:#上が行ったことないなら
-      if masu[x][y]==masu[x][y-1]:#上と同じなら
-        point+=1
-        yoko(x,y-1)
-  if y+1<4:#下が範囲内なら
-    if kioku[x][y+1]==0:#下が行ったことないなら
-      if masu[x][y]==masu[x][y+1]:#下と同じなら
-        point+=1
-        yoko(x,y+1)
-  if point>=2:#point２以上なら勝ちにしたい
-    win=10
+        try:#1～3か判定&数字かどうか
+            if box_x<1 or box_x>3:
+                box_x=int(input("「1～3」で置きたい列を入力"))
+        except  ValueError:
+            print("1～3!!!!!!!")
+            box_x=int(input("「1～3」で置きたい列を入力"))
 
-def tate(x,y):#縦判定
-  global point
-  global win
-  global kioku
-  kioku[x][y]=1#行ったことあることにする
-  if x-1>0:#左が範囲内なら
-    if kioku[x-1][y]==0:#左が行ったことないなら
-      if masu[x][y]==masu[x-1][y]:#左と同じなら
-        point+=1
-        tate(x-1,y)
-  if x+1<4:#右が範囲内なら
-    if kioku[x+1][y]==0:#右が行ったことないなら
-      if masu[x][y]==masu[x+1][y]:#右と同じなら
-        point+=1
-        tate(x+1,y)
-  if point>=2:#point２以上なら勝ちにしたい
-    win=10
+        try:#数字かどうか
+            box_y = int(input("1～3で置きたい行を入力"))
+        except  ValueError:
+            print("1～3!!!!!!!")
+            box_y = int(input("1～3で置きたい行を入力"))
 
-while win<5:#最大五回ループ
-  point=0
-  win+=1
-  print("oの番")
-  try:#数字かどうか
-    retu=int(input("1～3で置きたい列を入力"))
-  except  ValueError:
-    print("1～3!!!!!!!")
-    retu=int(input("1～3で置きたい列を入力"))
-  try:#数字かどうか
-    gyou=int(input("1～3で置きたい行を入力"))
-  except  ValueError:
-    print("1～3!!!!!!!")
-    gyou=int(input("1～3で置きたい行を入力"))
-  okuo(retu,gyou)
-  if win<5:#これで5回目のoで終わる
-    print("xの番")
-    try:#数字かどうか
-      retu=int(input("1～3で置きたい列を入力"))
-    except  ValueError:
-      print("1～3!!!!!!!")
-      retu=int(input("1～3で置きたい列を入力"))
-    try:#数字かどうか
-      gyou=int(input("1～3で置きたい行を入力"))
-    except  ValueError:
-      print("1～3!!!!!!!")
-      gyou=int(input("1～3で置きたい行を入力"))
-    okux(retu,gyou)
+        try:#1～3か判定&数字かどうか
+            if box_y<1 or box_y>3:
+                box_y=int(input("「1～3」で置きたい行を入力"))
+        except  ValueError:
+            print("1～3!!!!!!!")
+            box_y=int(input("「1～3」で置きたい行を入力"))
+            
+        if (box_x == 1
+              or box_x == 2
+              or box_x == 3):
+            if (box_y == 1
+                  or box_y == 2
+                  or box_y == 3):
+                return
+        
+    if box[box_x][box_y] == "o" or box[box_x][box_y] == "x":#すでにおかれてるマスに置こうとしたとき
+        print("すでに置かれています")
+        check()
 
-if win==10:
+
+def call(x,y):
+    global judge
+    global memory
+    global point
+    cross_right(x,y)
+    reset()
+    cross_left(x,y)
+    reset()
+    veritical(x,y)
+    reset()
+    side(x,y)
+    reset()
+
+
+def put_o(x,y):#oを置く処理
+    global judge
+    global memory
+    global point
+    box[x][y]="o"#oを置く
+    call(x,y)
+
+    for i in range(0,4):
+      print(box[i])#マスを表示
+
+
+def put_x(x,y):#oのときと同じ仕組みでx置く処理
+    global judge
+    global memory
+    global point
+    box[x][y]="x"#xを置く
+    call(x,y)
+
+    if judge == 10:#xのときjudgeが10なら20に変えることによってxが勝つ処理行う
+      judge = 20
+
+    for i in range(0,4):
+      print(box[i])#マスを表示
+
+
+def cross_left(x,y):#左斜め判定
+    global point
+    global judge
+    global memory
+    memory[x][y] = 1#行ったことあることにする
+  
+    if x-1>0 and y-1>0:#左斜め上が範囲外なら
+    
+        if memory[x-1][y-1] == 0:#左斜め上が行ったことあるなら
+    
+            if box[x][y] == box[x-1][y-1]:#左斜め上と同じなら
+                point += 1
+                cross_left(x-1,y-1)
+
+    if x+1<3 and y+1<4:#右下が範囲外なら
+    
+        if memory[x+1][y+1] == 0:#右下が行ったことあるなら
+    
+            if box[x][y] == box[x+1][y+1]:#右下と同じなら
+                point += 1
+                cross_left(x+1,y+1)
+
+    if point >= 2 :#point２以上なら勝ちにしたい
+        judge = 10
+
+
+def cross_right(x,y):#右ななめ判定
+    global point
+    global judge
+    global memory
+    memory[x][y] = 1#行ったことあることにする
+
+    if x-1>0 and y+1<4:#左下が範囲外なら
+
+      if memory[x-1][y+1] == 0:#左下が行ったことあるなら
+
+        if box[x][y] == box[x-1][y+1]:#左下と同じなら
+          point += 1
+          cross_right(x-1,y+1)
+
+    if x+1>4 and y-1<0:#右上が範囲外なら
+
+       if memory[x+1][y-1] == 0:#右上が行ったことあるなら
+
+          if box[x][y] == box[x+1][y-1]:#右上と同じなら
+            point += 1
+            cross_right(x+1,y-1)
+
+    if point >= 2:#point２以上なら勝ちにしたい
+        judge = 10
+
+
+def side(x,y):#横判定
+    global point
+    global judge
+    global memory
+    memory[x][y] = 1#行ったことあることにする
+
+    if y-1 > 0:#上が範囲外なら
+
+        if memory[x][y-1] == 0:#上が行ったことあるなら
+
+            if box[x][y] == box[x][y-1]:#上と同じなら
+                point += 1
+                side(x,y-1)
+
+    if y+1 > 4:#下が範囲外なら
+
+        if memory[x][y+1] == 0:#下が行ったことあるなら
+        
+
+            if box[x][y] == box[x][y+1]:#下と同じなら
+                point += 1
+                side(x,y+1)
+
+    if point >= 2:#point２以上なら勝ちにしたい
+        judge = 10
+
+
+def veritical(x,y):#縦判定
+    global point
+    global judge
+    global memory
+    memory[x][y] = 1#行ったことあることにする
+
+    if x-1 > 0:#左が範囲外なら
+
+        if memory[x-1][y] == 0:#左が行ったことあるなら
+
+            if box[x][y] == box[x-1][y]:#左と同じなら
+                point += 1
+                veritical(x-1,y)
+
+    if x+1 < 4:#右が範囲外なら
+
+        if memory[x+1][y] == 0:#右が行ったことあるなら
+        
+            if box[x][y] == box[x+1][y]:#右と同じなら
+                point += 1
+                veritical(x+1,y)
+
+    if point >= 2:#point２以上なら勝ちにしたい
+        judge = 10
+
+
+while judge < 5:#最大五回ループ
+    point = 0
+    judge += 1
+    print("oの番")
+    check()
+    put_o(box_x,box_y)
+
+    if judge < 5:#これで5回目のoで終わる
+        print("xの番")
+        check()
+        put_x(box_x,box_y)
+
+
+if judge == 10:
   print("oの勝ち")
-elif win==20:
+
+elif judge == 20:
   print("xの勝ち")
-else:
-  print("引き分け")
 
-from pathlib import WindowsPath
-masu=[[" ","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19"],["1","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],
- ["2","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],["3","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],
-  ["4","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],["5","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],
-  ["6","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],["7","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],
-   ["8","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"], ["9","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],
-    ["10","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],["11","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],
-    ["12","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],["13","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],
-     ["14","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],["15","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],
-      ["16","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],["17","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],
-      ["18","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],["19","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?","?"],]
-for i in range(0,20):
-  print(masu[i])#マスを表示
-
-win=0#勝ちか判定
-point=0#4でそろった判定
-
-kioku=[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],]#ループしないように行ったとこ記憶、行ったことあるなら１
-def reset():#kiokuとpointリセット
-  global kioku
-  global point
-  kioku=[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],]
-  point=0
-
-
-def okuo(x,y):#oを置く処理
-  global win
-  global kioku
-  global point
-  try:#1～19か判定&数字かどうか
-    if x<1 or x>19:
-      newretu=int(input("「1～19」で置きたい列を入力"))
-      x=newretu
-  except  ValueError:
-    print("1～19!!!!!!!")
-    newretu=int(input("「1～19」で置きたい列を入力"))
-    x=newretu
-  try:#1～19か判定&数字かどうか
-    if y<1 or y>19:
-      newgyou=int(input("「1～19」で置きたい行を入力"))
-      y=newgyou
-  except  ValueError:
-    print("1～19!!!!!!!")
-    newgyou=int(input("「1～19」で置きたい行を入力"))
-    y=newgyou
-  if masu[x][y]=="o" or masu[x][y]=="x":#すでにおかれてるマスに置こうとしたとき
-    print("すでに置かれています")
-    try:#数字かどうか
-      newretu=int(input("1～19で置きたい列を入力"))
-    except  ValueError:
-      print("1～19!!!!!!!")
-      newretu=int(input("1～19で置きたい列を入力"))
-    x=newretu
-    try:#数字かどうか
-      newgyou=int(input("1～19で置きたい行を入力"))
-    except  ValueError:
-      print("1～19!!!!!!!")
-      newgyou=int(input("1～19で置きたい行を入力"))
-    y=newgyou
-    try:#1～19か判定&数字かどうか
-      if x<1 or x>19:
-        newretu=int(input("「1～19」で置きたい列を入力"))
-        x=newretu
-    except  ValueError:
-      print("1～19!!!!!!!")
-      newretu=int(input("「1～19」で置きたい列を入力"))
-      x=newretu
-    try:#1～19か判定&数字かどうか
-      if y<1 or y>19:
-        newgyou=int(input("「1～19」で置きたい行を入力"))
-        y=newgyou
-    except  ValueError:
-      print("1～19!!!!!!!")
-      newgyou=int(input("「1～19」で置きたい行を入力"))
-      y=newgyou
-  masu[x][y]="o"#oを置く
-  naname(x,y)
-  reset()
-  naname2(x,y)
-  reset()
-  tate(x,y)
-  reset()
-  yoko(x,y)
-  reset()
-  for i in range(0,20):
-    print(masu[i])#マスを表示
-
-def okux(x,y):#oのときと同じ仕組みでx置く処理
-  global win
-  global kioku
-  global point
-  try:
-    if x<1 or x>19:
-      newretu=int(input("「1～19」で置きたい列を入力"))
-      x=newretu
-  except  ValueError:
-    print("1～19!!!!!!!")
-    newretu=int(input("「1～19」で置きたい列を入力"))
-    x=newretu
-  try:
-    if y<1 or y>19:
-      newgyou=int(input("「1～19」で置きたい行を入力"))
-      y=newgyou
-  except  ValueError:
-    print("1～19!!!!!!!")
-    newgyou=int(input("「1～19」で置きたい行を入力"))
-    y=newgyou
-  if masu[x][y]=="o" or masu[x][y]=="x":
-    print("すでに置かれています")
-    try:
-      newretu=int(input("1～19で置きたい列を入力"))
-    except  ValueError:
-      print("1～19!!!!!!!")
-      newretu=int(input("1～19で置きたい列を入力"))
-    x=newretu
-    try:
-      newgyou=int(input("1～19で置きたい行を入力"))
-    except  ValueError:
-      print("1～19!!!!!!!")
-      newgyou=int(input("1～19で置きたい行を入力"))
-    y=newgyou
-    try:
-      if x<1 or x>19:
-        newretu=int(input("「1～19」で置きたい列を入力"))
-        x=newretu
-    except  ValueError:
-      print("1～19!!!!!!!")
-      newretu=int(input("「1～19」で置きたい列を入力"))
-      x=newretu
-    try:
-      if y<1 or y>19:
-        newgyou=int(input("「1～19」で置きたい行を入力"))
-        y=newgyou
-    except  ValueError:
-      print("1～19!!!!!!!")
-      newgyou=int(input("「1～19」で置きたい行を入力"))
-      y=newgyou
-  masu[x][y]="x"#xを置く
-  naname(x,y)
-  reset()
-  naname2(x,y)
-  reset()
-  tate(x,y)
-  reset()
-  yoko(x,y)
-  reset()
-  if win==400:#xのときwinが400なら500に変えることによってxが勝つ処理行う
-    win=500
-  for i in range(0,20):
-    print(masu[i])#マスを表示
-
-
-def naname(x,y):#左斜め判定
-  global point
-  global win
-  global kioku
-  kioku[x][y]=1#行ったことあることにする
-  if x-1>0 and y-1>0:#左斜め上が範囲内なら
-    if kioku[x-1][y-1]==0:#左斜め上が行ったことないなら
-      if masu[x][y]==masu[x-1][y-1]:#左斜め上と同じなら
-        point+=1
-        naname(x-1,y-1)
-  if x+1<20 and y+1<20:#右下が範囲内なら
-    if kioku[x+1][y+1]==0:#右下が行ったことないなら
-      if masu[x][y]==masu[x+1][y+1]:#右下と同じなら
-        point+=1
-        naname(x+1,y+1)
-  if point>=4:#point4以上なら勝ちにしたい
-    win=400
-
-def naname2(x,y):#右ななめ判定
-  global point
-  global win
-  global kioku
-  kioku[x][y]=1#行ったことあることにする
-  if x-1>0 and y+1<20:#左下が範囲内なら
-    if kioku[x-1][y+1]==0:#左下が行ったことないなら
-      if masu[x][y]==masu[x-1][y+1]:#左下と同じなら
-        point+=1
-        naname2(x-1,y+1)
-  if x+1<20 and y-1>0:#右上が範囲内なら
-    if kioku[x+1][y-1]==0:#右上が行ったことないなら
-      if masu[x][y]==masu[x+1][y-1]:#右上と同じなら
-        point+=1
-        naname2(x+1,y-1)
-  if point>=4:#point4以上なら勝ちにしたい
-    win=400
-
-def yoko(x,y):#横判定
-  global point
-  global win
-  global kioku
-  kioku[x][y]=1#行ったことあることにする
-  if y-1>0:#上が範囲内なら
-    if kioku[x][y-1]==0:#上が行ったことないなら
-      if masu[x][y]==masu[x][y-1]:#上と同じなら
-        point+=1
-        yoko(x,y-1)
-  if y+1<20:#下が範囲内なら
-    if kioku[x][y+1]==0:#下が行ったことないなら
-      if masu[x][y]==masu[x][y+1]:#下と同じなら
-        point+=1
-        yoko(x,y+1)
-  if point>=4:#point4以上なら勝ちにしたい
-    win=400
-
-def tate(x,y):#縦判定
-  global point
-  global win
-  global kioku
-  kioku[x][y]=1#行ったことあることにする
-  if x-1>0:#左が範囲内なら
-    if kioku[x-1][y]==0:#左が行ったことないなら
-      if masu[x][y]==masu[x-1][y]:#左と同じなら
-        point+=1
-        tate(x-1,y)
-  if x+1<20:#右が範囲内なら
-    if kioku[x+1][y]==0:#右が行ったことないなら
-      if masu[x][y]==masu[x+1][y]:#右と同じなら
-        point+=1
-        tate(x+1,y)
-  if point>=4:#point4以上なら勝ちにしたい
-    win=400
-
-while win<361:#最大361回ループ
-  point=0
-  win+=1
-  print("oの番")
-  try:#数字かどうか
-    retu=int(input("1～19で置きたい列を入力"))
-  except  ValueError:
-    print("1～19!!!!!!!")
-    retu=int(input("1～19で置きたい列を入力"))
-  try:#数字かどうか
-    gyou=int(input("1～19で置きたい行を入力"))
-  except  ValueError:
-    print("1～19!!!!!!!")
-    gyou=int(input("1～19で置きたい行を入力"))
-  okuo(retu,gyou)
-  if win<361:#これで361回目のoで終わる
-    print("xの番")
-    try:#数字かどうか
-      retu=int(input("1～19で置きたい列を入力"))
-    except  ValueError:
-      print("1～19!!!!!!!")
-      retu=int(input("1～19で置きたい列を入力"))
-    try:#数字かどうか
-      gyou=int(input("1～19で置きたい行を入力"))
-    except  ValueError:
-      print("1～19!!!!!!!")
-      gyou=int(input("1～19で置きたい行を入力"))
-    okux(retu,gyou)
-
-if win==400:
-  print("oの勝ち")
-elif win==500:
-  print("xの勝ち")
 else:
   print("引き分け")
